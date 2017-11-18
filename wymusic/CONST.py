@@ -28,5 +28,4 @@ DATEBASE = 'music.db'
 DAILYTEMP = 'daily.temp'
 PLAYEDTEMP = 'played.temp'
 MPG123 = 'mpg123.exe'
-BASEPATH = os.getcwd()
-
+BASEPATH = os.path.split(os.path.realpath(__file__))[0]
