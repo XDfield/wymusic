@@ -11,6 +11,12 @@ NONCE = '0CoJUm6Qyw8W8jud'
 ENCSECKEY = '257348aecb5e556c066de214e531faadd1c55d814f9be95fd06d6bff9f4c7a41f831f6394d5a3fd2e3881736d94a02ca919d952872e7d0a50ebfa1769a7a62d512f5f1ca21aec60bc3819a9c3ffca5eca9a0dba6d6f7249b06f5965ecfff3695b54e1c28f3f624750ed39e7de08fc8493242e26dbc4484a01c76f739e135637c'
 IV = '0102030405060708'
 # 登陆相关
+LOGIN_DISC = '''
+# ------------------------------------------ #
+# 登陆网易云音乐
+# ps: 目前只支持手机登录(密码为隐式输入)
+# ------------------------------------------ #
+'''
 HEADERS = {
     'Referer': 'http://music.163.com/',
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36',
@@ -24,8 +30,8 @@ URLS = {
 LOGINNEEDED = ['daily']
 # 文件相关
 COOKIE = 'login.cookie'
-DATEBASE = 'music.db'
+DATABASE = 'music.db'
 DAILYTEMP = 'daily.temp'
 PLAYEDTEMP = 'played.temp'
 MPG123 = 'mpg123.exe'
-BASEPATH = os.path.split(os.path.realpath(__file__))[0]
+BASEPATH = os.path.join(os.path.expanduser('~'), 'wymusic')

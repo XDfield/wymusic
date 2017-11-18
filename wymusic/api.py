@@ -12,6 +12,7 @@ import random
 import requests
 
 from datetime import datetime, timedelta
+from getpass import getpass
 from Crypto.Cipher import AES
 from wymusic.CONST import *
 
@@ -125,18 +126,20 @@ def loadDaily():
     :return:
     """
     today = getDate()
-    if os.path.exists(DAILYTEMP):
-        with open(DAILYTEMP, 'r', encoding='utf-8') as f:
+    DAILYTEMP_PATH = os.path.join(BASEPATH, DAILYTEMP)
+    PLAYEDTEMP_PATH = os.path.join(BASEPATH, PLAYEDTEMP)
+    if os.path.exists(DAILYTEMP_PATH):
+        with open(DAILYTEMP_PATH, 'r', encoding='utf-8') as f:
             json_temp = json.loads(f.read())
         if today not in json_temp.keys():
-            os.remove(DAILYTEMP)
-            if os.path.exists(PLAYEDTEMP):
-                os.remove(PLAYEDTEMP)
+            os.remove(DAILYTEMP_PATH)
+            if os.path.exists(PLAYEDTEMP_PATH):
+                os.remove(PLAYEDTEMP_PATH)
         else:
             return json_temp[today]
     songData = getDailyInfos()
     save2DB(songData, today)
-    with open(DAILYTEMP, 'w', encoding='utf-8') as f:
+    with open(DAILYTEMP_PATH, 'w', encoding='utf-8') as f:
         f.write(json.dumps({today: songData}, ensure_ascii=False))
     return songData
 
@@ -148,7 +151,8 @@ def save2DB(songData, today):
     :param today: 今日日期
     :return:
     """
-    conn = sqlite3.connect(DATEBASE)
+    DATABASE_PATH = os.path.join(BASEPATH, DATABASE)
+    conn = sqlite3.connect(DATABASE_PATH)
     cursor = conn.cursor()
     cursor.execute('''CREATE TABLE '{}' 
             (ID INT PRIMARY KEY NOT NULL,
@@ -187,12 +191,11 @@ def playById(item):
     :param item: 歌曲信息字典
     """
     log('Playing: {}'.format(item['name']))
-    # mpg123 = os.path.join(BASEPATH, MPG123)
     try:
         data = getDataById(item['id'])
-        os.system('{} -q --utf8 {}'.format(MPG123, data[str(item['id'])]['url']))
+        os.system('{} -q {}'.format(MPG123, data[str(item['id'])]['url']))
     except KeyboardInterrupt:
-        log('finish')
+        sys.exit()
 
 
 def playDaily():
@@ -219,11 +222,12 @@ def havePlayed(songId, length):
     :param length: 今日曲单长度
     :return:
     """
-    if not os.path.exists(PLAYEDTEMP):
-        with open(PLAYEDTEMP, 'w', encoding='utf-8') as f:
+    PLAYEDTEMP_PATH = os.path.join(BASEPATH, PLAYEDTEMP)
+    if not os.path.exists(PLAYEDTEMP_PATH):
+        with open(PLAYEDTEMP_PATH, 'w', encoding='utf-8') as f:
             f.write('{}\n'.format(songId))
         return False
-    with open(PLAYEDTEMP, 'r', encoding='utf-8') as f:
+    with open(PLAYEDTEMP_PATH, 'r', encoding='utf-8') as f:
         temp = f.readlines()
     if '{}\n'.format(songId) not in temp:
         return False
@@ -261,9 +265,9 @@ def getCookie():
     filename = os.path.join(BASEPATH, COOKIE)
     if not os.path.exists(filename):
         # 创建cookie
-        log('请登陆网易云')
-        user = input('username: ')
-        pwd = input('password: ')
+        log(LOGIN_DISC)
+        user = input('phone: ')
+        pwd = getpass('password: ')
         cookie = login(user, pwd)
         saveCookie(json.dumps(cookie, ensure_ascii=False), filename)
     else:
