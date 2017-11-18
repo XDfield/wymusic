@@ -6,7 +6,7 @@
 简单易用, 基于*Python3.5*, 音乐播放使用的mpg123  
 一运行就拉取当天的每日歌单保存到数据库中(使用sqlite3), 同一天不会重复拉取, 首次使用需要进行登陆
 
-> Requried Python Pakage:  
+#### 依赖包
 > requests
 
 ### Installation  
