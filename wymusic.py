@@ -1,3 +1,0 @@
-import api
-
-api.playDaily()
