@@ -15,6 +15,7 @@ from datetime import datetime, timedelta
 from getpass import getpass
 from Crypto.Cipher import AES
 from CONST import *
+from display import *
 
 
 # -----------------------------------------------------------------
@@ -190,7 +191,7 @@ def playById(item):
     通过id播放音乐
     :param item: 歌曲信息字典
     """
-    log('Playing: {}'.format(item['name']))
+    displaySongInfo(item)
     try:
         data = getDataById(item['id'])
         os.system('{} -q {}'.format(MPG123, data[str(item['id'])]['url']))
