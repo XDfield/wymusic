@@ -14,7 +14,7 @@ import requests
 from datetime import datetime, timedelta
 from getpass import getpass
 from Crypto.Cipher import AES
-from wymusic.CONST import *
+from CONST import *
 
 
 # -----------------------------------------------------------------
@@ -92,7 +92,7 @@ def log(msg, mode=''):
     msg: 待输出信息
     mode: 信息类别
     """
-    print(msg)
+    print(msg.replace(u'\xa0', u' '))
 
 
 def encryptAndPost(data, mode):
@@ -198,7 +198,7 @@ def playById(item):
         sys.exit()
 
 
-def playDaily():
+def playDaily(mode=''):
     """
     随机播放每日推荐
     :return:
@@ -210,9 +210,12 @@ def playDaily():
         sys.exit()
     while True:
         item = songData[random.randint(0, length-1)]
-        if not havePlayed(item['id'], length):
-            break
-    playById(item)
+        if mode == 'loop':
+            playDaily(item)
+        else:
+            if not havePlayed(item['id'], length):
+                playById(item)
+                break
 
 
 def havePlayed(songId, length):

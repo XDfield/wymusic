@@ -33,5 +33,5 @@ COOKIE = 'login.cookie'
 DATABASE = 'music.db'
 DAILYTEMP = 'daily.temp'
 PLAYEDTEMP = 'played.temp'
-MPG123 = 'mpg123.exe'
+MPG123 = 'mpg123'
 BASEPATH = os.path.join(os.path.expanduser('~'), 'wymusic')
