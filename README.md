@@ -22,7 +22,8 @@ python setup.py install
 $ wymusic
 ```  
 随机播放一首每日歌曲  
-> 参数说明:
+
+> 参数说明:  
 > -l: 循环播放每日歌单
 
 ### log  
